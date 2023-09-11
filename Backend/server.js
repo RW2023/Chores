@@ -7,6 +7,7 @@ const cors = require('cors');  // Assuming you're using CORS middleware
 const choreRoutes = require('./routes/chores');
 const kidRoutes = require('./routes/kids');
 const rewardRoutes = require('./routes/rewards');
+const authRoutes = require('./routes/auth');
 
 // Load environment variables
 dotenv.config();
@@ -17,6 +18,7 @@ const app = express();
 // Middleware to parse JSON
 app.use(express.json());
 app.use(cors());  // Enable CORS if you're using it
+app.use('/api/auth', authRoutes);
 
 // MongoDB URI from .env
 const MONGO_URI = process.env.MONGO_URI;
