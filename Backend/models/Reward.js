@@ -1,3 +1,9 @@
 const mongoose = require('mongoose');
-// Reward schema content here
+
+const rewardSchema = new mongoose.Schema({
+    name: { type: String, required: true },
+    description: String,
+    pointsRequired: { type: Number, required: true }
+});
+
 module.exports = mongoose.model('Reward', rewardSchema);
