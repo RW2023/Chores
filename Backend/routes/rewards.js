@@ -20,15 +20,10 @@ router.get('/', async (req, res) => {
  * @description Create a new reward
  */
 router.post('/', async (req, res) => {
-    const reward = new Reward({
-        name: req.body.name,
-        description: req.body.description,
-        points: req.body.points
-    });
-
     try {
-        const newReward = await reward.save();
-        res.status(201).json(newReward);
+        const newReward = new Reward(req.body);
+        const savedReward = await newReward.save();
+        res.status(201).json(savedReward);
     } catch (err) {
         res.status(400).json({ message: err.message });
     }
@@ -38,26 +33,24 @@ router.post('/', async (req, res) => {
  * @route GET /:id
  * @description Fetch a single reward by ID
  */
-router.get('/:id', getReward, (req, res) => {
-    res.json(res.reward);
+router.get('/:id', async (req, res) => {
+    try {
+        const reward = await Reward.findById(req.params.id);
+        if (!reward) return res.status(404).json({ message: 'Reward not found' });
+        res.json(reward);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
 });
 
 /**
  * @route PUT /:id
  * @description Update a reward by ID
  */
-router.put('/:id', getReward, async (req, res) => {
-    if (req.body.name != null) {
-        res.reward.name = req.body.name;
-    }
-    if (req.body.description != null) {
-        res.reward.description = req.body.description;
-    }
-    if (req.body.points != null) {
-        res.reward.points = req.body.points;
-    }
+router.put('/:id', async (req, res) => {
     try {
-        const updatedReward = await res.reward.save();
+        const updatedReward = await Reward.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        if (!updatedReward) return res.status(404).json({ message: 'Reward not found' });
         res.json(updatedReward);
     } catch (err) {
         res.status(400).json({ message: err.message });
@@ -68,32 +61,14 @@ router.put('/:id', getReward, async (req, res) => {
  * @route DELETE /:id
  * @description Delete a reward by ID
  */
-router.delete('/:id', getReward, async (req, res) => {
+router.delete('/:id', async (req, res) => {
     try {
-        await res.reward.remove();
-        res.json({ message: 'Deleted Reward' });
+        const deletedReward = await Reward.findByIdAndDelete(req.params.id);
+        if (!deletedReward) return res.status(404).json({ message: 'Reward not found' });
+        res.json({ message: 'Reward deleted' });
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
 });
-
-/**
- * @middleware getReward
- * @description Middleware to fetch a single reward by ID
- */
-async function getReward(req, res, next) {
-    let reward;
-    try {
-        reward = await Reward.findById(req.params.id);
-        if (reward == null) {
-            return res.status(404).json({ message: 'Cannot find reward' });
-        }
-    } catch (err) {
-        return res.status(500).json({ message: err.message });
-    }
-
-    res.reward = reward;
-    next();
-}
 
 module.exports = router;
