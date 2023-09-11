@@ -3,12 +3,12 @@ const mongoose = require('mongoose');
 const kidSchema = new mongoose.Schema({
     name: { type: String, required: true },
     age: { type: Number, required: true },
+    schoolLevel: { type: String }, // <-- Optional field for school level
     chores: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Chore' }],
     rewards: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Reward' }],
-    gender: { // <-- Add this new field
+    gender: {
         type: String,
-        required: true,  // make it required if you want
-        enum: ['male', 'female', 'other']  // if you want to restrict the values
+        // enum: ['male', 'female', 'other']  <-- Uncomment this line to restrict to these values
     },
 });
 
