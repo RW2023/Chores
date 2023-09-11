@@ -13,7 +13,8 @@ const app = express();
 app.use(express.json());
 
 // MongoDB URI from .env
-const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017';
+const MONGO_URI = process.env.MONGO_URI;
+
 
 // Connect to MongoDB
 mongoose.connect(MONGO_URI, {
