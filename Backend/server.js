@@ -3,6 +3,11 @@ const express = require('express');
 const dotenv = require('dotenv');
 const mongoose = require('mongoose');
 
+// Import routes
+const choresRoutes = require('./routes/chores');
+const kidsRoutes = require('./routes/kids');
+const rewardsRoutes = require('./routes/rewards');
+
 // Load environment variables
 dotenv.config();
 
@@ -15,7 +20,6 @@ app.use(express.json());
 // MongoDB URI from .env
 const MONGO_URI = process.env.MONGO_URI;
 
-
 // Connect to MongoDB
 mongoose.connect(MONGO_URI, {
     useNewUrlParser: true,
@@ -27,6 +31,11 @@ mongoose.connect(MONGO_URI, {
     .catch(err => {
         console.error('MongoDB connection error:', err);
     });
+
+// Use imported routes as middleware
+app.use('/api/chores', choresRoutes);
+app.use('/api/kids', kidsRoutes);
+app.use('/api/rewards', rewardsRoutes);
 
 // Test Route
 app.get('/', (req, res) => {
