@@ -20,11 +20,19 @@ router.get('/', async (req, res) => {
  * @description Create a new kid
  */
 router.post('/', async (req, res) => {
-  const kid = new Kid({
+  const kidData = {
     name: req.body.name,
     age: req.body.age,
-    schoolLevel: req.body.schoolLevel
-  });
+    schoolLevel: req.body.schoolLevel,
+    chores: [],
+    rewards: []
+  };
+
+  if (req.body.gender) {
+    kidData.gender = req.body.gender;
+  }
+
+  const kid = new Kid(kidData);
 
   try {
     const newKid = await kid.save();
@@ -33,6 +41,8 @@ router.post('/', async (req, res) => {
     res.status(400).json({ message: err.message });
   }
 });
+
+
 
 /**
  * @route GET /:id
