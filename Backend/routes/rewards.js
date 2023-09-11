@@ -2,7 +2,10 @@ const express = require('express');
 const Reward = require('../models/Reward');
 const router = express.Router();
 
-// Fetch all rewards
+/**
+ * @route GET /
+ * @description Fetch all rewards
+ */
 router.get('/', async (req, res) => {
     try {
         const rewards = await Reward.find();
@@ -12,7 +15,10 @@ router.get('/', async (req, res) => {
     }
 });
 
-// Create a new reward
+/**
+ * @route POST /
+ * @description Create a new reward
+ */
 router.post('/', async (req, res) => {
     const reward = new Reward({
         name: req.body.name,
@@ -28,12 +34,18 @@ router.post('/', async (req, res) => {
     }
 });
 
-// Fetch a single reward by ID
+/**
+ * @route GET /:id
+ * @description Fetch a single reward by ID
+ */
 router.get('/:id', getReward, (req, res) => {
     res.json(res.reward);
 });
 
-// Update a reward by ID
+/**
+ * @route PUT /:id
+ * @description Update a reward by ID
+ */
 router.put('/:id', getReward, async (req, res) => {
     if (req.body.name != null) {
         res.reward.name = req.body.name;
@@ -52,7 +64,10 @@ router.put('/:id', getReward, async (req, res) => {
     }
 });
 
-// Delete a reward by ID
+/**
+ * @route DELETE /:id
+ * @description Delete a reward by ID
+ */
 router.delete('/:id', getReward, async (req, res) => {
     try {
         await res.reward.remove();
@@ -62,7 +77,10 @@ router.delete('/:id', getReward, async (req, res) => {
     }
 });
 
-// Middleware for getReward
+/**
+ * @middleware getReward
+ * @description Middleware to fetch a single reward by ID
+ */
 async function getReward(req, res, next) {
     let reward;
     try {

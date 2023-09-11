@@ -2,7 +2,10 @@ const express = require('express');
 const Kid = require('../models/Kid');
 const router = express.Router();
 
-// Fetch all kids
+/**
+ * @route GET /
+ * @description Fetch all kids
+ */
 router.get('/', async (req, res) => {
   try {
     const kids = await Kid.find();
@@ -12,7 +15,10 @@ router.get('/', async (req, res) => {
   }
 });
 
-// Create a new kid
+/**
+ * @route POST /
+ * @description Create a new kid
+ */
 router.post('/', async (req, res) => {
   const kid = new Kid({
     name: req.body.name,
@@ -28,12 +34,18 @@ router.post('/', async (req, res) => {
   }
 });
 
-// Fetch a single kid by ID
+/**
+ * @route GET /:id
+ * @description Fetch a single kid by ID
+ */
 router.get('/:id', getKid, (req, res) => {
   res.json(res.kid);
 });
 
-// Update a kid by ID
+/**
+ * @route PUT /:id
+ * @description Update a kid by ID
+ */
 router.put('/:id', getKid, async (req, res) => {
   if (req.body.name != null) {
     res.kid.name = req.body.name;
@@ -52,7 +64,10 @@ router.put('/:id', getKid, async (req, res) => {
   }
 });
 
-// Delete a kid by ID
+/**
+ * @route DELETE /:id
+ * @description Delete a kid by ID
+ */
 router.delete('/:id', getKid, async (req, res) => {
   try {
     await res.kid.remove();
@@ -62,7 +77,10 @@ router.delete('/:id', getKid, async (req, res) => {
   }
 });
 
-// Middleware for getKid
+/**
+ * @middleware getKid
+ * @description Middleware to fetch a single kid by ID
+ */
 async function getKid(req, res, next) {
   let kid;
   try {

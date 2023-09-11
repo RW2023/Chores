@@ -2,7 +2,10 @@ const express = require('express');
 const Chore = require('../models/Chore');
 const router = express.Router();
 
-// Fetch all chores
+/**
+ * @route GET /
+ * @description Fetch all chores
+ */
 router.get('/', async (req, res) => {
     try {
         const chores = await Chore.find();
@@ -12,7 +15,10 @@ router.get('/', async (req, res) => {
     }
 });
 
-// Create a new chore
+/**
+ * @route POST /
+ * @description Create a new chore
+ */
 router.post('/', async (req, res) => {
     const chore = new Chore({
         name: req.body.name,
@@ -28,12 +34,18 @@ router.post('/', async (req, res) => {
     }
 });
 
-// Fetch a single chore by ID
+/**
+ * @route GET /:id
+ * @description Fetch a single chore by ID
+ */
 router.get('/:id', getChore, (req, res) => {
     res.json(res.chore);
 });
 
-// Update a chore by ID
+/**
+ * @route PUT /:id
+ * @description Update a chore by ID
+ */
 router.put('/:id', getChore, async (req, res) => {
     if (req.body.name != null) {
         res.chore.name = req.body.name;
@@ -52,7 +64,10 @@ router.put('/:id', getChore, async (req, res) => {
     }
 });
 
-// Delete a chore by ID
+/**
+ * @route DELETE /:id
+ * @description Delete a chore by ID
+ */
 router.delete('/:id', getChore, async (req, res) => {
     try {
         await res.chore.remove();
@@ -62,7 +77,10 @@ router.delete('/:id', getChore, async (req, res) => {
     }
 });
 
-// Middleware for getChore
+/**
+ * @middleware getChore
+ * @description Middleware to fetch a single chore by ID
+ */
 async function getChore(req, res, next) {
     let chore;
     try {
