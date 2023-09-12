@@ -13,7 +13,8 @@ router.post(
     [
         // Validate input
         body('email').isEmail(),
-        body('password').isLength({ min: 6 })
+        body('password').isLength({ min: 6 }),
+        body('username').notEmpty() // <-- Add this line to validate username
     ],
     async (req, res) => {
         // Check for validation errors
@@ -23,7 +24,7 @@ router.post(
         }
 
         // Destructure request
-        const { email, password } = req.body;
+        const { email, password, username } = req.body;  // <-- Add username here
 
         // Check if user exists
         const existingUser = await User.findOne({ email });
@@ -35,7 +36,8 @@ router.post(
         const hashedPassword = await bcrypt.hash(password, 10);
         const user = new User({
             email,
-            password: hashedPassword
+            password: hashedPassword,
+            username  // <-- Add this line
         });
         const savedUser = await user.save();
 
