@@ -3,6 +3,7 @@ const User = require('../models/User');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { body, validationResult } = require('express-validator');
+require('dotenv').config();
 
 const router = express.Router();
 const jwtSecret = process.env.JWT_SECRET;
@@ -20,17 +21,21 @@ router.post('/register',
             return res.status(400).json({ errors: errors.array() });
         }
         const { email, password, username } = req.body;
+
         try {
             let user = await User.findOne({ email });
             if (user) {
                 return res.status(400).json({ error: 'User already exists' });
             }
-            const hashedPassword = await bcrypt.hash(password, 10);
-            user = new User({ email, password: hashedPassword, username });
+
+            // No need to hash password here; the model's pre-save hook will handle it
+            user = new User({ email, password, username });
             const savedUser = await user.save();
+
             const token = jwt.sign({ id: savedUser._id }, jwtSecret, {
                 expiresIn: 3600 // expires in 1 hour
             });
+
             res.json({ token });
         } catch (err) {
             console.error(err);
@@ -51,18 +56,26 @@ router.post('/login',
             return res.status(400).json({ errors: errors.array() });
         }
         const { email, password } = req.body;
+
         try {
             const user = await User.findOne({ email });
             if (!user) {
                 return res.status(400).json({ error: 'Invalid email or password' });
             }
+            console.log('Hashed password from DB:', user.password);  // Debug line added here
+            console.log('Plain text password:', password);  // Debug line added here
+
             const isMatch = await bcrypt.compare(password, user.password);
+            console.log('Password match:', isMatch);  // Debug line added here
+
             if (!isMatch) {
                 return res.status(400).json({ error: 'Invalid email or password' });
             }
+
             const token = jwt.sign({ id: user._id }, jwtSecret, {
                 expiresIn: 3600 // expires in 1 hour
             });
+
             res.json({ token });
         } catch (err) {
             console.error(err);
