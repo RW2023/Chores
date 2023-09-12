@@ -62,12 +62,8 @@ router.post('/login',
             if (!user) {
                 return res.status(400).json({ error: 'Invalid email or password' });
             }
-            console.log('Hashed password from DB:', user.password);  // Debug line added here
-            console.log('Plain text password:', password);  // Debug line added here
 
             const isMatch = await bcrypt.compare(password, user.password);
-            console.log('Password match:', isMatch);  // Debug line added here
-
             if (!isMatch) {
                 return res.status(400).json({ error: 'Invalid email or password' });
             }
