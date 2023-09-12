@@ -9,18 +9,19 @@ import Register from "./routes/Register";
 
 function App() {
   return (
-    <Router>
-      <div className="App">
-        {/* Here you can place a Header component or any global UI elements */}
-
-        <Switch>
-          <Route path="/" exact component={Home} />
-          <Route path="/login" component={Login} />
-          <Route path="/register" component={Register} />
-          {/* Add more Routes here as needed */}
-        </Switch>
-      </div>
-    </Router>
+    <GlobalStateProvider>
+      <Router>
+        <div className="App">
+          {/* Here you can place a Header component or any global UI elements */}
+          <Switch>
+            <Route path="/" exact component={Home} />
+            <Route path="/login" component={Login} />
+            <Route path="/register" component={Register} />
+            {/* Add more Routes here as needed */}
+          </Switch>
+        </div>
+      </Router>
+    </GlobalStateProvider>
   );
 }
 
