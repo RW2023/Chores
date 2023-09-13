@@ -1,56 +1,50 @@
 import React, { useState } from 'react';
+import api from '../api';
+import { useHistory } from 'react-router-dom';
+const history = useHistory();
 
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const config = {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ email, password }),
-        };
-
         try {
-            const response = await fetch(`${process.env.REACT_APP_API_URL}/api/auth/login`, config);
+            const response = await api.post('/auth/login', { email, password });
+            const { token } = response.data;
 
-            if (response.status !== 200) {
-                const data = await response.json();
-                console.error(data.error);
-                return;
-            }
+            // Store the token in local storage
+            localStorage.setItem('authToken', token);
 
-            const data = await response.json();
-            localStorage.setItem('authToken', data.token);
+            // Redirect to home or dashboard
+            history.push('/dashboard');
+            console.log('Login successful');
 
-            // Redirect to home or dashboard route
-        } catch (error) {
-            console.error('There was an error logging in:', error);
+        } catch (err) {
+            setError(err.response.data.error);
+            setTimeout(() => setError(''), 5000);
         }
     };
 
     return (
         <div>
-            <h2>Login</h2>
             <form onSubmit={handleSubmit}>
+                <h2>Login</h2>
+                {error && <span>{error}</span>}
                 <div>
-                    <label htmlFor="email">Email</label>
+                    <label>Email</label>
                     <input
                         type="email"
-                        id="email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                     />
                 </div>
                 <div>
-                    <label htmlFor="password">Password</label>
+                    <label>Password</label>
                     <input
                         type="password"
-                        id="password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                     />
