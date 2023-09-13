@@ -1,0 +1,1 @@
+import React from 'react';\n\nconst Login = () => {\n  return <h1>Login</h1>;\n};\n\nexport default Login;

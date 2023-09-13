@@ -1,0 +1,1 @@
+import React from 'react';\n\nconst Register = () => {\n  return <h1>Register</h1>;\n};\n\nexport default Register;
