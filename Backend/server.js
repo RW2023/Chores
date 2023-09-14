@@ -30,6 +30,8 @@ mongoose.connect(MONGO_URI, {
     useUnifiedTopology: true,
 })
     .then(() => {
+        console.log('Connecting to MongoDB...');
+        console.log(`The Data flows...`);
         console.log('Successfully connected to MongoDB');
     })
     .catch(err => {
@@ -50,5 +52,7 @@ app.get('/', (req, res) => {
 // Listen on port
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
+    console.log(`Chores App Backend. Version ${process.env.npm_package_version}`)
+    console.log(`Author:  ${process.env.CR}`);
     console.log(`Server is running on port ${PORT}`);
 });
