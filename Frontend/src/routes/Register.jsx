@@ -1,1 +1,7 @@
-import React from 'react';\n\nconst Register = () => {\n  return <h1>Register</h1>;\n};\n\nexport default Register;
+import React from 'react';
+
+const Register = () => {
+  return <h1>Register</h1>;
+};
+
+export default Register;

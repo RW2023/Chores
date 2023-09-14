@@ -1,1 +1,7 @@
-import React from 'react';\n\nconst Home = () => {\n  return <h1>Home</h1>;\n};\n\nexport default Home;
+import React from 'react';
+
+const Home = () => {
+  return <h1>Home</h1>;
+};
+
+export default Home;
