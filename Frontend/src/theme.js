@@ -29,6 +29,36 @@ const theme = createTheme({
             fontFamily: "'ziclets', sans-serif",
         },
     },
+
+    components: {
+        // MuiButton: {
+        //     styleOverrides: {
+        //         root: {
+        //             backgroundColor: 'var(--button)',
+        //             color: 'var(--buttonText)',
+        //             '&:hover': {
+        //                 backgroundColor: 'var(--highlight)',
+        //             },
+        //         },
+        //     },
+        // },
+        MuiInputLabel: {
+            styleOverrides: {
+                root: {
+                    color: 'var(--headline)',
+                },
+            },
+        },
+        MuiInputBase: {
+            styleOverrides: {
+                input: {
+                    backgroundColor: 'var(--background)',
+                    color: 'var(--paragraph)',
+                    borderColor: 'var(--stroke)',
+                },
+            },
+        },
+    },
 });
 
 export default theme;
