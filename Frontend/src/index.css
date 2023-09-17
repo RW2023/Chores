@@ -12,6 +12,7 @@
   --tertiary: #eebbc3;
   --mainFont: 'Poppins', sans-serif;
   --secondaryFont: 'Roboto', sans-serif;
+  --titleFont: ziclets, sans-serif;
 }
 
 /* CSS Reset */
@@ -38,7 +39,7 @@ body {
 }
 
 h1 {
-  font-family: var(--mainFont);
+  font-family: var(--titleFont);
   font-size: 2.5rem;
   font-weight: 700;
   color: var(--headline);
