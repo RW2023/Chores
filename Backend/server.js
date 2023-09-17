@@ -3,6 +3,8 @@ const dotenv = require('dotenv');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const morgan = require('morgan');
+const colors = require('colors');
+
 
 // Import routes
 const authRoutes = require('./routes/auth');
@@ -30,9 +32,9 @@ mongoose.connect(MONGO_URI, {
     useUnifiedTopology: true,
 })
     .then(() => {
-        console.log('Connecting to MongoDB...');
-        console.log(`The Data flows...`);
-        console.log('Successfully connected to MongoDB');
+        console.log('Connecting to MongoDB...'.green);
+        console.log(`The Data flows...`.green);
+        console.log('Successfully connected to MongoDB'.green);
     })
     .catch(err => {
         console.error('MongoDB connection error:', err);
@@ -52,7 +54,7 @@ app.get('/', (req, res) => {
 // Listen on port
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-    console.log(`Chores App Backend. Version ${process.env.npm_package_version}`)
-    console.log(`Author:  ${process.env.CR}`);
-    console.log(`Server is running on port ${PORT}`);
+    console.log(`Chores App Backend. Version ${process.env.npm_package_version}`.yellow)
+    console.log(`Author:  ${process.env.CR}`.bgBlack.white);
+    console.log(`Server is running on port ${PORT}`.green);
 });
