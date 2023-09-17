@@ -1,5 +1,6 @@
 import React from 'react';
 import { Container, Typography, Box } from '@mui/material';
+import RegistrationForm from '../forms/RegistrationForm';
 
 const ParentPage = () => {
   return (
@@ -10,8 +11,10 @@ const ParentPage = () => {
         </Typography>
         {/* Insert Parent-specific components and logic here */}
       </Box>
+      <RegistrationForm />
     </Container>
   );
 };
 
 export default ParentPage;
+
