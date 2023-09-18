@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
-import axios from 'axios';
-import { Button, TextField, Container, Typography } from '@mui/material';
+import { Button, TextField, Container, Typography, Snackbar } from '@mui/material';
+import MuiAlert from '@mui/material/Alert';
+
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 const RegistrationForm = () => {
   const [formData, setFormData] = useState({
@@ -8,8 +12,8 @@ const RegistrationForm = () => {
     email: '',
     password: '',
   });
-
-  const [confirmationMessage, setConfirmationMessage] = useState('');
+  const [open, setOpen] = useState(false);
+  const [error, setError] = useState('');
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -19,30 +23,45 @@ const RegistrationForm = () => {
     });
   };
 
- const handleSubmit = async (e) => {
-  e.preventDefault();
-  try {
-    const response = await fetch('http://localhost:5000/api/auth/register', {  // replace with your backend URL
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(formData),
-    });
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch('http://localhost:5000/api/auth/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+      const data = await response.json();
 
-    if (response.ok) {
-      const data = await response.json();
-      console.log('Registration successful:', data);
-      // Navigate to the dashboard or show a success message
-    } else {
-      const data = await response.json();
-      console.error('Registration failed:', data);
-      // Show an error message
+      if (data.token) {
+        // Reset the form data
+        setFormData({
+          username: '',
+          email: '',
+          password: '',
+        });
+        // Show success message
+        setOpen(true);
+        // Store the token in local storage for further use
+        localStorage.setItem('authToken', data.token);
+      } else {
+        // Handle errors by setting error state
+        setError(data.error || 'An error occurred during registration.');
+      }
+    } catch (error) {
+      // Handle network or other errors
+      setError('Network error. Please try again.');
     }
-  } catch (error) {
-    console.error('There was a problem with the registration:', error);
-  }
-};
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpen(false);
+  };
 
   return (
     <Container>
@@ -81,7 +100,16 @@ const RegistrationForm = () => {
           Register
         </Button>
       </form>
-      {confirmationMessage && <Typography variant="body2">{confirmationMessage}</Typography>}
+      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="success">
+          Registration successful!
+        </Alert>
+      </Snackbar>
+      {error && (
+        <Alert severity="error">
+          {error}
+        </Alert>
+      )}
     </Container>
   );
 };
