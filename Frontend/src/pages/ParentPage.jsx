@@ -1,9 +1,10 @@
 import React from 'react';
 import { Container, Typography, Box } from '@mui/material';
-import RegistrationForm from '../forms/RegistrationForm';
+import AuthContainer from '../containers/AuthContainer';
 
 const ParentPage = () => {
   return (
+    <>
     <Container>
       <Box sx={{ mt: 4 }}>
         <Typography variant="h1">
@@ -11,8 +12,9 @@ const ParentPage = () => {
         </Typography>
         {/* Insert Parent-specific components and logic here */}
       </Box>
-      <RegistrationForm />
     </Container>
+     <AuthContainer />
+     </>
   );
 };
 

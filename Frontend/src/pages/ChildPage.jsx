@@ -1,6 +1,6 @@
 import React from 'react';
 import { Container, Typography, Box } from '@mui/material';
-import RegistrationForm from '../forms/RegistrationForm';
+import AuthContainer from '../containers/AuthContainer';
 import '../index.css';
 const ChildPage = () => {
   return (
@@ -13,7 +13,7 @@ const ChildPage = () => {
           {/* Insert Child-specific components and logic here */}
         </Box>
       </Container>
-      <RegistrationForm />
+      <AuthContainer />
     </>
   );
 };
